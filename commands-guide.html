@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>명령어 가이드</title>
+    <style>
+      body { font-family: "Segoe UI", "Noto Sans KR", sans-serif; margin: 0; background: #f6f8fb; color: #1f2937; }
+      .wrap { max-width: 900px; margin: 0 auto; padding: 20px; }
+      .card { background: #fff; border: 1px solid #dbe2ea; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+      h1, h2 { margin: 0 0 10px; }
+      code { background: #eef3f8; padding: 2px 6px; border-radius: 6px; }
+      ul { margin: 8px 0 0 18px; }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <h1>명령어 가이드 (RAW 명령 탭)</h1>
+        <p>웹앱의 <code>원문 명령</code> 입력창은 문자열을 그대로 Pi GATT 서버로 보냅니다.</p>
+      </section>
+
+      <section class="card">
+        <h2>기본 명령</h2>
+        <ul>
+          <li><code>PING</code>: 연결 왕복 테스트 (<code>PONG</code> 응답)</li>
+          <li><code>STATUS</code>: HID 상태 확인 (예: <code>OK:LIVE:/dev/hidg0:lang=en</code>)</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>입력 명령</h2>
+        <ul>
+          <li><code>TEXT:Hello</code> 문자열 입력</li>
+          <li><code>TEXT:저는 KDS입니다.</code> 한글/영문 혼용 입력</li>
+          <li><code>KEY:ENTER</code> 단일 키 입력</li>
+          <li><code>KEY:BACKSPACE</code> 백스페이스 입력</li>
+          <li><code>KEY:CTRL+B</code> 조합키 입력</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>지원 KEY</h2>
+        <ul>
+          <li><code>ENTER</code>, <code>ESC</code>, <code>BACKSPACE</code>, <code>TAB</code>, <code>SPACE</code></li>
+          <li><code>UP</code>, <code>DOWN</code>, <code>LEFT</code>, <code>RIGHT</code></li>
+          <li><code>F1</code>~<code>F12</code>, <code>0</code>~<code>9</code>, <code>A</code>~<code>Z</code></li>
+          <li><code>HANGEUL</code>, <code>HAN/ENG</code></li>
+          <li>조합키: <code>CTRL+B</code>, <code>CTRL+I</code>, <code>CTRL+U</code>, <code>ALT+TAB</code></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>TEXT 특수문자 처리</h2>
+        <ul>
+          <li>ASCII/한글(2벌식 변환 가능 범위)은 그대로 입력합니다.</li>
+          <li>일부 특수문자는 자동 치환합니다. 예: <code>·</code> -&gt; <code>/</code>, <code>「」</code> -&gt; <code>[]</code>, <code>※</code> -&gt; <code>*</code></li>
+          <li>치환 규칙이 없는 문자는 <code>?</code>로 대체하여 전송을 중단하지 않습니다.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>오류 응답</h2>
+        <ul>
+          <li><code>ERR:UNKNOWN_CMD</code>: 알 수 없는 명령 형식</li>
+          <li><code>ERR:PermissionError</code>: <code>/dev/hidg0</code> 접근 권한 문제</li>
+          <li><code>ERR:ValueError</code>: 잘못된 키 이름/값</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>대용량 TEXT 전송</h2>
+        <ul>
+          <li><code>TEXT</code> 명령이 512바이트를 넘으면 자동 분할 전송됩니다.</li>
+          <li>전송 전 확인 창이 표시됩니다.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

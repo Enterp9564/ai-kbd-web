@@ -1,0 +1,515 @@
+:root {
+  --bg-top: #0f141b;
+  --bg-mid: #0b1016;
+  --bg-btm: #070b10;
+  --panel: rgba(24, 30, 40, 0.84);
+  --ink: #dbe4ef;
+  --muted: #9aaac0;
+  --line: #2f3948;
+  --accent: #2f8d7d;
+  --accent-strong: #236d61;
+  --accent-soft: #1f3937;
+  --warn-soft: #3b3123;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: #000;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--ink);
+  font-family: "SUIT", "Pretendard", "IBM Plex Sans KR", "Noto Sans KR", sans-serif;
+  background:
+    radial-gradient(1200px 520px at -20% -30%, #1a2330 0%, transparent 58%),
+    radial-gradient(860px 420px at 120% -10%, #152532 0%, transparent 52%),
+    linear-gradient(160deg, var(--bg-top), var(--bg-mid) 55%, var(--bg-btm));
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(transparent 31px, rgba(219, 228, 239, 0.03) 32px),
+    linear-gradient(90deg, transparent 31px, rgba(219, 228, 239, 0.03) 32px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at 20% 10%, black 20%, transparent 80%);
+}
+
+.app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+  display: grid;
+  gap: 14px;
+}
+
+.panel {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.24),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  padding: 16px;
+  animation: panel-in 0.36s ease both;
+}
+
+.panel:nth-child(2) { animation-delay: 0.03s; }
+.panel:nth-child(3) { animation-delay: 0.06s; }
+.panel:nth-child(4) { animation-delay: 0.09s; }
+.panel:nth-child(5) { animation-delay: 0.12s; }
+.panel:nth-child(6) { animation-delay: 0.15s; }
+.panel:nth-child(7) { animation-delay: 0.18s; }
+.panel:nth-child(8) { animation-delay: 0.21s; }
+.panel:nth-child(9) { animation-delay: 0.24s; }
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(24px, 4.5vw, 34px);
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sub a {
+  color: #8fd0c3;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.settings-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.settings-grid.is-collapsed {
+  display: none;
+}
+
+.macro-wrap.is-collapsed {
+  display: none;
+}
+
+.macro-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.macro-keys button {
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+.macro-load-row {
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.macro-load-main {
+  flex: 0 0 80%;
+}
+
+.macro-load-json {
+  flex: 0 0 calc(20% - 8px);
+  min-width: 120px;
+}
+
+#macroProfileSelect {
+  width: 100%;
+  min-height: 180px;
+  padding: 6px;
+  flex: 1 1 auto;
+}
+
+#macroProfileSelect option {
+  padding: 6px 8px;
+}
+
+#macroEditor {
+  min-height: 220px;
+  margin-top: 10px;
+}
+
+#btnMacroRun {
+  background: linear-gradient(145deg, #2b7fc7, #235f90);
+  border-color: transparent;
+}
+
+.setting-block {
+  background: rgba(16, 22, 31, 0.36);
+  border: 1px solid #2a3442;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.inline-field {
+  align-items: center;
+}
+
+.inline-field label {
+  min-width: 108px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sec-head {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sec-head h2 {
+  margin-bottom: 0;
+}
+
+.title-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-head {
+  margin-bottom: 0;
+}
+
+.text-head {
+  margin-bottom: 10px;
+}
+
+.push-right {
+  margin-left: auto;
+}
+
+.status-row {
+  margin: 8px 0 2px;
+}
+
+/* 전송 설정 행: 제목·상태·버튼 위아래 가운데, 동일 높이 유지 */
+.settings-head .title-left {
+  align-items: center;
+}
+
+.settings-head .title-left h2 {
+  margin: 0;
+}
+
+.settings-head .title-left > .conn-state-wrap,
+.settings-head .title-left > #btnConnect,
+.settings-head .title-left > #btnDisconnect,
+.settings-head .title-left > #btnStopSend {
+  box-sizing: border-box;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 상태+디바이스명 한 박스: 연결 버튼과 동일 높이 */
+.conn-state-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  padding-left: 13px;
+  padding-right: 13px;
+  color: #b7ebe0;
+  background: var(--accent-soft);
+  border: 1px solid #35605a;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.conn-state-wrap .state {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  color: inherit;
+  display: block;
+}
+
+.conn-state-wrap .state-device {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  color: #8bc4bb;
+  font-weight: 500;
+  line-height: 1.2;
+  display: block;
+}
+
+.check-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  background: #1d2531;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+button,
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 14px;
+}
+
+button {
+  padding: 10px 13px;
+  background: #202735;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.14s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: #4f80b8;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.btnGhost {
+  background: rgba(33, 43, 58, 0.7);
+  border-color: #384a60;
+  color: #adc0d8;
+  font-weight: 600;
+  padding: 8px 11px;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+#btnConnect {
+  background: linear-gradient(145deg, var(--accent), var(--accent-strong));
+  color: #fff;
+  border-color: transparent;
+}
+
+#btnDisconnect {
+  background: var(--warn-soft);
+  border-color: #5c4d38;
+}
+
+#btnStopSend {
+  background: #4a2b2b;
+  border-color: #8b4a4a;
+  color: #ffd9d9;
+  /* 전송 설정 행에서 연결/해제와 동일 높이·패딩 (btnGhost 8px 11px 덮어씀) */
+}
+
+.settings-head .title-left > #btnStopSend {
+  padding: 0 13px;
+}
+
+#btnStopSend:hover:not(:disabled) {
+  border-color: #c96a6a;
+  box-shadow: 0 6px 14px rgba(120, 20, 20, 0.28);
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  padding: 10px 12px;
+  background: rgba(23, 29, 39, 0.95);
+  color: var(--ink);
+}
+
+input[type="text"] {
+  min-width: 220px;
+  flex: 1;
+}
+
+input[type="number"] {
+  width: 140px;
+  flex: 0 0 auto;
+}
+
+.check-inline input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  accent-color: var(--accent);
+}
+
+textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.42;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.log {
+  margin: 0;
+  min-height: 200px;
+  max-height: 340px;
+  overflow: auto;
+  background: linear-gradient(180deg, #0f1622, #0b121c);
+  color: #bfd1e8;
+  border: 1px solid #243247;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .app {
+    max-width: 100%;
+    padding: 14px 10px 24px;
+    gap: 10px;
+  }
+
+  .panel {
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  button,
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+  }
+
+  .check-inline {
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  .macro-load-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .macro-load-main,
+  .macro-load-json {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .push-right {
+    margin-left: 0;
+  }
+
+  .title-left {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  /* 모바일에서 전송 설정 헤더를 세로 정렬로 바꾸고 버튼 폭을 통일 */
+  .settings-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .settings-head .title-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-head .title-left > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #btnToggleSettings {
+    width: 100%;
+  }
+
+  /* iOS safe-area 대응: 내용 컨테이너에만 적용 */
+  @supports (padding: max(0px)) {
+    .app {
+      padding-left: max(10px, env(safe-area-inset-left));
+      padding-right: max(10px, env(safe-area-inset-right));
+    }
+  }
+}
+

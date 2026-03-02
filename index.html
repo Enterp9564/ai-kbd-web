@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1016" />
+    <title>AI Keyboard BLE WebApp MVP</title>
+    <link rel="manifest" href="./pwa/manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="./favicon.ico" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="panel">
+        <h1>AI Keyboard BLE</h1>
+        <p class="sub">PC 유선 MVP (Web Bluetooth)</p>
+        <p class="sub">
+          <a href="./commands-guide.html" target="_blank" rel="noopener noreferrer">명령어 가이드</a>
+        </p>
+      </header>
+
+      <section class="panel" id="settingsPanel">
+        <div class="row sec-head settings-head">
+          <div class="title-left">
+            <h2>전송 설정</h2>
+            <div class="conn-state-wrap">
+              <div id="connState" class="state">상태: 연결 안 됨</div>
+              <div id="connDeviceName" class="state-device" aria-hidden="true"></div>
+            </div>
+            <button id="btnConnect" type="button">연결</button>
+            <button id="btnDisconnect" type="button" disabled>해제</button>
+            <button id="btnStopSend" class="btnGhost" type="button">전송 정지</button>
+          </div>
+          <button id="btnToggleSettings" class="btnGhost push-right" type="button">닫기</button>
+        </div>
+
+        <div id="settingsContent" class="settings-grid">
+          <div class="setting-block inline-field row">
+            <label for="delayInput">전송 지연(초)</label>
+            <input id="delayInput" type="number" min="0" step="0.1" value="2" />
+          </div>
+
+          <div class="setting-block inline-field row">
+            <label for="speedInput">타이핑 속도 (%)</label>
+            <input id="speedInput" type="number" min="20" max="300" step="1" value="90" />
+          </div>
+
+          <div class="setting-block row">
+            <button id="btnPing" type="button">PING</button>
+            <button id="btnStatus" type="button">STATUS</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="row sec-head text-head">
+          <h2>텍스트 전송</h2>
+          <label class="check-inline push-right" for="mdMode">
+            <input id="mdMode" type="checkbox" />
+            <span>마크다운 인식</span>
+          </label>
+        </div>
+
+        <div class="row col">
+          <textarea
+            id="textInput"
+            rows="6"
+            placeholder="여러 줄 텍스트를 입력하세요.&#10;Enter로 줄바꿈됩니다."
+          ></textarea>
+          <button id="btnSendText" type="button">TEXT 전송</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>키 전송</h2>
+        <div class="row">
+          <button data-key="ENTER" class="btnKey" type="button">ENTER</button>
+          <button data-key="BACKSPACE" class="btnKey" type="button">BACKSPACE</button>
+          <button data-key="TAB" class="btnKey" type="button">TAB</button>
+          <button data-key="ESC" class="btnKey" type="button">ESC</button>
+          <button data-key="UP" class="btnKey" type="button">UP</button>
+          <button data-key="DOWN" class="btnKey" type="button">DOWN</button>
+          <button data-key="LEFT" class="btnKey" type="button">LEFT</button>
+          <button data-key="RIGHT" class="btnKey" type="button">RIGHT</button>
+          <button data-key="SHIFT+LEFT" class="btnKey" type="button">SHIFT+LEFT</button>
+          <button data-key="SHIFT+RIGHT" class="btnKey" type="button">SHIFT+RIGHT</button>
+          <button data-key="SHIFT+UP" class="btnKey" type="button">SHIFT+UP</button>
+          <button data-key="SHIFT+DOWN" class="btnKey" type="button">SHIFT+DOWN</button>
+          <button data-key="SHIFT+TAB" class="btnKey" type="button">SHIFT+TAB</button>
+          <button data-key="CTRL+LEFT" class="btnKey" type="button">CTRL+LEFT</button>
+          <button data-key="CTRL+RIGHT" class="btnKey" type="button">CTRL+RIGHT</button>
+          <button data-key="HANGEUL" class="btnKey" type="button">한/영</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>서식 단축키</h2>
+        <div class="row">
+          <button id="btnBold" type="button">굵게 (Ctrl+B)</button>
+          <button id="btnItalic" type="button">기울임 (Ctrl+I)</button>
+          <button id="btnUnderline" type="button">밑줄 (Ctrl+U)</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>전문 명령</h2>
+        <div class="row">
+          <input id="rawInput" type="text" placeholder="예: KEY:F1" />
+          <button id="btnSendRaw" type="button">RAW 전송</button>
+        </div>
+      </section>
+
+      <section class="panel" id="macroPanel">
+        <div class="row sec-head">
+          <h2>매크로</h2>
+          <button id="btnToggleMacro" class="btnGhost push-right" type="button">열기</button>
+        </div>
+
+        <div id="macroContent" class="macro-wrap is-collapsed">
+          <div class="macro-grid">
+            <div class="setting-block row col">
+              <h3>프로필</h3>
+              <div class="row col">
+                <select id="macroProfileSelect" size="6"></select>
+                <div class="row macro-load-row">
+                  <button id="btnMacroLoadProfile" class="macro-load-main" type="button">선택 프로필 불러오기</button>
+                  <button id="btnMacroImportJson" class="btnGhost macro-load-json" type="button">JSON 불러오기</button>
+                </div>
+                <input id="macroImportJsonFile" type="file" accept="application/json,.json" hidden />
+              </div>
+              <div class="row">
+                <input id="macroProfileName" type="text" placeholder="프로필 이름" />
+                <button id="btnMacroSaveProfile" type="button">저장</button>
+                <button id="btnMacroDeleteProfile" type="button">삭제</button>
+              </div>
+            </div>
+
+            <div class="setting-block row col">
+              <h3>매크로 빌더</h3>
+              <div class="row">
+                <input id="macroTextInput" type="text" placeholder="텍스트 입력 후 추가" />
+                <button id="btnMacroAddText" type="button">텍스트 추가</button>
+              </div>
+              <div class="row">
+                <input id="macroDelayInput" type="number" min="0" step="50" value="300" />
+                <button id="btnMacroAddDelay" type="button">지연(ms) 추가</button>
+              </div>
+              <div class="row macro-keys">
+                <button class="btnMacroKey" data-macro-key="ENTER" type="button">ENTER</button>
+                <button class="btnMacroKey" data-macro-key="TAB" type="button">TAB</button>
+                <button class="btnMacroKey" data-macro-key="BACKSPACE" type="button">BACKSPACE</button>
+                <button class="btnMacroKey" data-macro-key="ESC" type="button">ESC</button>
+                <button class="btnMacroKey" data-macro-key="UP" type="button">UP</button>
+                <button class="btnMacroKey" data-macro-key="DOWN" type="button">DOWN</button>
+                <button class="btnMacroKey" data-macro-key="LEFT" type="button">LEFT</button>
+                <button class="btnMacroKey" data-macro-key="RIGHT" type="button">RIGHT</button>
+                <button class="btnMacroKey" data-macro-key="SHIFT+LEFT" type="button">SHIFT+LEFT</button>
+                <button class="btnMacroKey" data-macro-key="SHIFT+RIGHT" type="button">SHIFT+RIGHT</button>
+                <button class="btnMacroKey" data-macro-key="SHIFT+UP" type="button">SHIFT+UP</button>
+                <button class="btnMacroKey" data-macro-key="SHIFT+DOWN" type="button">SHIFT+DOWN</button>
+                <button class="btnMacroKey" data-macro-key="SHIFT+TAB" type="button">SHIFT+TAB</button>
+                <button class="btnMacroKey" data-macro-key="CTRL+LEFT" type="button">CTRL+LEFT</button>
+                <button class="btnMacroKey" data-macro-key="CTRL+RIGHT" type="button">CTRL+RIGHT</button>
+                <button class="btnMacroKey" data-macro-key="HANGEUL" type="button">한/영</button>
+                <button class="btnMacroKey" data-macro-key="CTRL+B" type="button">CTRL+B</button>
+                <button class="btnMacroKey" data-macro-key="CTRL+I" type="button">CTRL+I</button>
+                <button class="btnMacroKey" data-macro-key="CTRL+U" type="button">CTRL+U</button>
+                <button class="btnMacroKey" data-macro-key="F1" type="button">F1</button>
+                <button class="btnMacroKey" data-macro-key="F2" type="button">F2</button>
+                <button class="btnMacroKey" data-macro-key="F3" type="button">F3</button>
+                <button class="btnMacroKey" data-macro-key="F4" type="button">F4</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row col">
+            <textarea
+              id="macroEditor"
+              rows="10"
+              placeholder="라인별 매크로를 입력하세요.&#10;예:&#10;TEXT:안녕하세요&#10;DELAY:500&#10;KEY:ENTER"
+            ></textarea>
+            <div class="row">
+              <button id="btnMacroRun" type="button">매크로 실행</button>
+              <button id="btnMacroClear" class="btnGhost" type="button">편집창 비우기</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>로그</h2>
+        <pre id="logBox" class="log"></pre>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./pwa/service-worker.js")
+            .catch((err) => {
+              console.log("ServiceWorker registration failed:", err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
