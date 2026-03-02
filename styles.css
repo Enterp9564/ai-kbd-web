@@ -462,6 +462,7 @@ textarea {
   .check-inline {
     width: auto;
     justify-content: flex-start;
+    white-space: normal;
   }
 
   .macro-load-row {
