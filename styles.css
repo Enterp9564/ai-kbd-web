@@ -395,7 +395,7 @@ select {
 }
 
 input[type="text"] {
-  min-width: 220px;
+  min-width: 150px;
   flex: 1;
 }
 
