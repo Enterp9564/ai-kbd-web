@@ -4,6 +4,14 @@ const TX_UUID = "12345678-1234-5678-1234-56789abcdef2";
 
 const STORAGE_KEY = "ai_kbd_webapp_settings_v1";
 
+function resetViewport() {
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (!viewport) {
+    return;
+  }
+  viewport.setAttribute("content", "width=device-width, initial-scale=1, viewport-fit=cover");
+}
+
 const els = {
   btnConnect: document.querySelector("#btnConnect"),
   btnDisconnect: document.querySelector("#btnDisconnect"),
@@ -1101,6 +1109,15 @@ els.btnKeys.forEach((btn) => {
   });
 });
 
+window.addEventListener("resize", resetViewport);
+window.addEventListener("orientationchange", resetViewport);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    resetViewport();
+  }
+});
+
+resetViewport();
 applySettingsToUI();
 setConnectedState(false);
 log("Ready.");

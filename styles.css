@@ -48,7 +48,7 @@ body::before {
 
 .app {
   width: 100%;
-  max-width: 100%;
+  max-width: 980px;
   margin: 0 auto;
   padding: 28px 18px 48px;
   display: grid;
@@ -441,6 +441,7 @@ textarea {
 
 @media (max-width: 640px) {
   .app {
+    max-width: 100%;
     padding: 14px 10px 24px;
     gap: 10px;
   }
