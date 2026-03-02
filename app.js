@@ -9,7 +9,17 @@ function resetViewport() {
   if (!viewport) {
     return;
   }
-  viewport.setAttribute("content", "width=device-width, initial-scale=1, viewport-fit=cover");
+  const layoutWidth = document.documentElement.scrollWidth || window.innerWidth || 1;
+  const visualWidth = window.innerWidth || 1;
+  let scale = visualWidth / layoutWidth;
+  if (!Number.isFinite(scale) || scale <= 0) {
+    scale = 1;
+  }
+  scale = Math.max(0.8, Math.min(1, scale));
+  viewport.setAttribute(
+    "content",
+    `width=device-width, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=${scale}, viewport-fit=cover`
+  );
 }
 
 const els = {
